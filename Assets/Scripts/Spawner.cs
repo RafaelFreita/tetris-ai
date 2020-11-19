@@ -8,15 +8,7 @@ public class Spawner : MonoBehaviour
     [SerializeField]
     private List<GameObject> groups = new List<GameObject>();
 
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
-			SpawnNext();
-		}
-	}
-
-	private GameObject SpawnNext()
+	public GameObject SpawnNext()
 	{
         int index = Random.Range(0, groups.Count);
 
