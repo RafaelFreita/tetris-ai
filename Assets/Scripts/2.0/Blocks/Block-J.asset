@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e69049d7aa44f74e86d84f569cc8bd1, type: 3}
   m_Name: Block-J
   m_EditorClassIdentifier: 
+  id: 1
   value: 1
   x: 0
   y: 0
@@ -52,3 +53,4 @@ MonoBehaviour:
       y: 0
     - x: 0
       y: 1
+  currentRotation: 0

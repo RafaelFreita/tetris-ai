@@ -5,22 +5,23 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Block", menuName = "Tetris Blocks")]
 public class BlocksGroup : ScriptableObject
 {
+    public int id;
     public int value;
     [HideInInspector] public int x;
     [HideInInspector] public int y;
 
     public List<Vector2IntArray> positions = new List<Vector2IntArray>();
-    private int currentPosition = 0;
+    public int currentRotation = 0;
 
     public void RotateCW()
 	{
-        currentPosition++;
-        if (currentPosition >= positions.Count) currentPosition = 0;
+        currentRotation++;
+        if (currentRotation >= positions.Count) currentRotation = 0;
 	}
     public void RotateCWW()
     {
-        currentPosition--;
-        if (currentPosition < 0) currentPosition = positions.Count - 1;
+        currentRotation--;
+        if (currentRotation < 0) currentRotation = positions.Count - 1;
     }
 
     public Vector2Int[] GetCurrentTiles()
@@ -28,7 +29,7 @@ public class BlocksGroup : ScriptableObject
         Vector2Int[] tiles = new Vector2Int[4];
 		for (int i = 0; i < 4; i++)
 		{
-            Vector2Int current = positions[currentPosition].values[i];
+            Vector2Int current = positions[currentRotation].values[i];
             tiles[i] = new Vector2Int(current.x + x, current.y + y);
         }
         return tiles;

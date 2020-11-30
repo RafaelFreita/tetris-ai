@@ -106,8 +106,6 @@ public class GridController_Old : MonoBehaviour {
 			Vector2 pos = new Vector2(position.x, position.y);
 			pos.Round();
 
-			Debug.Log($"Checking at ({(int)pos.x}, {(int)pos.y})");
-
 			if (!IsValidPosition((int)pos.x, (int)pos.y))
 				return false;
 		}
