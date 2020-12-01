@@ -5,10 +5,11 @@ using Unity.MLAgents.Sensors;
 
 public class GridModel : Agent {
 
-	public const int width = 10;
-	public const int height = 25;
-	public const int spawnRow = 21;
-	private int[,] grid = new int[width, height]; // 0 is open - x > 1 is a tile
+	public const int width = 6;
+	public const int height = 12;
+	public const int maxHeight = height + 5;
+	public const int spawnRow = height + 1;
+	private int[,] grid = new int[width, maxHeight]; // 0 is open - x > 1 is a tile
 
 	[SerializeField]
 	private float timePerUpdate = 1f;
@@ -61,6 +62,7 @@ public class GridModel : Agent {
 
 	private void MoveRight()
 	{
+		AddReward(-0.01f);
 		currentGroup.x += 1;
 		if (!CheckCurrentGroup()) currentGroup.x -= 1;
 		else UpdateView();
@@ -68,6 +70,7 @@ public class GridModel : Agent {
 
 	private void MoveLeft()
 	{
+		AddReward(-0.01f);
 		currentGroup.x -= 1;
 		if (!CheckCurrentGroup()) currentGroup.x += 1;
 		else UpdateView();
@@ -75,6 +78,7 @@ public class GridModel : Agent {
 
 	private void RotateBlock()
 	{
+		AddReward(-0.01f);
 		currentGroup.RotateCW();
 		if (!CheckCurrentGroup()) currentGroup.RotateCWW();
 		else UpdateView();
@@ -87,17 +91,34 @@ public class GridModel : Agent {
 		timer = 0;
 	}
 
-	int framesPerUpdate = 2;
+	int framesPerUpdate = 5;
 	private void FixedUpdate()
 	{
+
+		if (shouldMoveLeft)
+		{
+			shouldMoveLeft = false;
+			MoveLeft();
+		}
+
+		if (shouldMoveRight)
+		{
+			shouldMoveRight = false;
+			MoveRight();
+		}
+
+		if (shouldRotate)
+		{
+			shouldRotate = false;
+			RotateBlock();
+		}
+
 		timer++;
 		if (timer >= framesPerUpdate)
 		{
 			MoveGroupDown();
 			timer = 0;
 		}
-
-		//timer += Mathf.Lerp(Time.fixedDeltaTime, Time.fixedDeltaTime / 30, linesFinished / 1000f);
 	}
 	#endregion
 
@@ -117,11 +138,22 @@ public class GridModel : Agent {
 
 			SetGroupTiles();
 			UpdateGrid();
-			SpawnNextGroup();
 
-			if (!CheckCurrentGroup()) { GameReset(true); } // GAME END
+			if (CheckGameEnd()) { GameReset(true); } // GAME END
+
+			SpawnNextGroup();
 		}
-		else UpdateView();
+		UpdateView();
+	}
+
+	private bool CheckGameEnd()
+	{
+		for (int x = 0; x < width; x++)
+		{
+			if (grid[x, height] != 0)
+				return true;
+		}
+		return false;
 	}
 
 	private void GameReset(bool endEpisode = false)
@@ -131,17 +163,8 @@ public class GridModel : Agent {
 
 		if (endEpisode)
 		{
-
-			//for (int y = 0; y < height; y++)
-			//{
-			//	for (int x = 0; x < width; x++)
-			//	{
-			//		if (grid[x, y] != 0)
-			//			AddReward(1.0f);
-			//	}
-			//}
-
-			AddReward(Mathf.Pow(removedRows * width, 2));
+			//SetReward(Mathf.Pow(removedRows * width, 2));
+			//removedRows = 0;
 
 			EndEpisode();
 		}
@@ -156,6 +179,7 @@ public class GridModel : Agent {
 	}
 
 	private BlocksGroup nextGroup;
+	private float newBlockMul = 5f;
 	private void SpawnNextGroup()
 	{
 		if (!nextGroup)
@@ -167,7 +191,7 @@ public class GridModel : Agent {
 
 		nextGroup = spawner.SpawnNext();
 
-		AddReward(1f);
+		//AddReward(1f);
 
 		UpdateView();
 	}
@@ -176,7 +200,7 @@ public class GridModel : Agent {
 	public void UpdateGrid()
 	{
 		// For each row (bottom to top)
-		for (int y = 0; y < height; y++)
+		for (int y = 0; y < maxHeight; y++)
 		{
 			// Check if row is full
 			if (RowIsFull(y))
@@ -207,7 +231,7 @@ public class GridModel : Agent {
 		}
 	}
 
-	private bool CheckCurrentGroup()
+	private bool CheckCurrentGroup(bool checkOver = false)
 	{
 		foreach (Vector2Int tile in currentGroup.GetCurrentTiles())
 		{
@@ -219,7 +243,7 @@ public class GridModel : Agent {
 
 	private void ResetGrid()
 	{
-		for (int y = 0; y < height; y++)
+		for (int y = 0; y < maxHeight; y++)
 		{
 			for (int x = 0; x < width; x++)
 			{
@@ -247,7 +271,7 @@ public class GridModel : Agent {
 		return x >= 0
 			&& x < width
 			&& y >= 0
-			&& y < height;
+			&& y < maxHeight;
 	}
 
 	private int removedRows = 0;
@@ -257,12 +281,12 @@ public class GridModel : Agent {
 		{
 			grid[x, y] = 0;
 		}
-		removedRows++;
+		AddReward(1f);
 	}
 
 	private void DecreaseRowsAbove(int row)
 	{
-		for (int y = row; y < height; y++)
+		for (int y = row; y < maxHeight; y++)
 			DecreaseRow(y);
 	}
 
@@ -291,31 +315,21 @@ public class GridModel : Agent {
 		GameReset();
 	}
 
+	private float holesMul = -3f;
+	private float maxHeightMul = -2f;
+	private float bumpMul = -3f;
 
 	public override void CollectObservations(VectorSensor sensor)
 	{
-		// Grid -> 25 x 10 = 250
-		//for (int y = 0; y < height; y++)
-		//{
-		//	for (int x = 0; x < width; x++)
-		//	{
-		//		sensor.AddObservation(grid[x, y]);
-		//	}
-		//}
+		// OBSERVATIONS
 
-		// For each column, observe height
-		for (int x = 0; x < width; x++)
+		// Grid -> height x 10 = 250
+		for (int y = 0; y < height; y++)
 		{
-			int height = 0;
-			for (int y = height; y > 0; y--)
+			for (int x = 0; x < width; x++)
 			{
-				if(grid[x,y] != 0)
-				{
-					height = y;
-					break;
-				}
+				sensor.AddObservation(grid[x, y]);
 			}
-			sensor.AddObservation(height);
 		}
 
 		// Group -> 1
@@ -328,9 +342,81 @@ public class GridModel : Agent {
 		// Group rotation -> 1
 		sensor.AddObservation(currentGroup.currentRotation);
 
-		// Old Total = 250 + 1 + 2 + 1 = 254
-		// Total = 10 + 1 + 2 + 1 = 14
+		// Total = 200 + 1 + 2 + 1 = 204
+		// Smaller total = (5*4) + 4 = 20 + 4 = 24
 	}
+
+	private int GetTotalHoles()
+	{
+		int t = 0;
+		for (int y = 0; y < 19; y++)
+		{
+			for (int x = 0; x < width; x++)
+			{
+				if (grid[x, y] == 0)
+				{
+					for (int cy = y; cy < height; cy++)
+					{
+						if (grid[x, cy] != 0)
+							t++;
+					}
+				}
+			}
+		}
+		return t;
+	}
+
+	private int GetMaxHeight()
+	{
+		int h = 0;
+		for (int x = 0; x < width; x++)
+		{
+			int th = 0;
+			for (int y = height; y >= 0; y--)
+			{
+				if (grid[x, y] != 0)
+				{
+					th = y + 1;
+					break;
+				}
+			}
+			h += th;
+		}
+		return h;
+	}
+
+	private int GetTotalBump()
+	{
+		int[] heights = new int[width];
+
+		for (int x = 0; x < width; x++)
+		{
+			int th = 0;
+			for (int y = height; y >= 0; y--)
+			{
+				if (grid[x, y] != 0)
+				{
+					th = y;
+					break;
+				}
+			}
+			heights[x] = th;
+		}
+
+
+		int t = 0;
+		for (int x = 0; x < width - 1; x++)
+		{
+			t += Mathf.Abs(heights[x] - heights[x + 1]);
+		}
+
+		return t;
+	}
+
+
+	private bool shouldMoveLeft = false;
+	private bool shouldMoveRight = false;
+	private bool shouldRotate = false;
 
 	public override void OnActionReceived(float[] vectorAction)
 	{
@@ -338,15 +424,33 @@ public class GridModel : Agent {
 		float moveSide = vectorAction[0];
 		float rotate = vectorAction[1];
 
-		if (moveSide < -0.5) MoveLeft();
-		if (moveSide > 0.5) MoveRight();
-		if (rotate > 0) RotateBlock();
+		if (moveSide < -0.5) shouldMoveLeft = true; // MoveLeft();
+		if (moveSide > 0.5) shouldMoveRight = true; // MoveRight();
+		if (rotate > 0) shouldRotate = true; // RotateBlock();
+	}
+
+
+	private bool shouldPressRotate = false;
+	private int xDelta = 0;
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.RightArrow))
+			xDelta += 1;
+
+		if (Input.GetKeyDown(KeyCode.LeftArrow))
+			xDelta -= 1;
+
+		if (Input.GetKeyDown(KeyCode.UpArrow))
+			shouldPressRotate = true;
 	}
 
 	public override void Heuristic(float[] actionsOut)
 	{
-		actionsOut[0] = Input.GetAxis("Horizontal");
-		actionsOut[1] = Input.GetKeyDown(KeyCode.UpArrow) ? 1.0f : 0.0f;
+		actionsOut[0] = xDelta;
+		actionsOut[1] = shouldPressRotate ? 1.0f : 0.0f;
+
+		xDelta = 0;
+		shouldPressRotate = false;
 	}
 
 	#endregion

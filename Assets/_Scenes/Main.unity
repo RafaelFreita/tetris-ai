@@ -676,6 +676,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TetrisArena (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 8307603302187660338, guid: e19e9e59826f84843aeab22a57663911, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8307603302187660341, guid: e19e9e59826f84843aeab22a57663911, type: 3}
       propertyPath: m_LocalPosition.x
       value: 22.5
@@ -855,6 +859,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TetrisArena (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8307603302187660338, guid: e19e9e59826f84843aeab22a57663911, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8307603302187660341, guid: e19e9e59826f84843aeab22a57663911, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7.5
@@ -911,6 +919,10 @@ PrefabInstance:
     - target: {fileID: 8307603302187660338, guid: e19e9e59826f84843aeab22a57663911, type: 3}
       propertyPath: m_Name
       value: TetrisArena (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8307603302187660338, guid: e19e9e59826f84843aeab22a57663911, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8307603302187660341, guid: e19e9e59826f84843aeab22a57663911, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1135,5 +1147,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8307603303972989217, guid: e19e9e59826f84843aeab22a57663911, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 5022602860645237092, guid: 70f95d3aa0143794abd0043682e135d1, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e19e9e59826f84843aeab22a57663911, type: 3}

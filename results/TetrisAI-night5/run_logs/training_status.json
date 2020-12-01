@@ -1,0 +1,42 @@
+{
+    "TetrisAgent": {
+        "checkpoints": [
+            {
+                "steps": 13818,
+                "file_path": "results\\TetrisAI-night5\\TetrisAgent\\TetrisAgent-13818.onnx",
+                "reward": null,
+                "creation_time": 1606713814.5580227
+            },
+            {
+                "steps": 14842,
+                "file_path": "results\\TetrisAI-night5\\TetrisAgent\\TetrisAgent-14842.onnx",
+                "reward": null,
+                "creation_time": 1606713843.4675968
+            },
+            {
+                "steps": 0,
+                "file_path": "results\\TetrisAI-night5\\TetrisAgent\\TetrisAgent-0.onnx",
+                "reward": null,
+                "creation_time": 1606713880.0637302
+            },
+            {
+                "steps": 175540,
+                "file_path": "results\\TetrisAI-night5\\TetrisAgent\\TetrisAgent-175540.onnx",
+                "reward": null,
+                "creation_time": 1606714641.1520152
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 175540,
+            "file_path": "results\\TetrisAI-night5\\TetrisAgent.onnx",
+            "reward": null,
+            "creation_time": 1606714641.1520152
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.2.0",
+        "mlagents_version": "0.22.0",
+        "torch_version": "1.7.0+cu110",
+        "tensorflow_version": -1
+    }
+}

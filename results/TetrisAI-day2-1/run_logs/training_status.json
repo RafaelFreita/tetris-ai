@@ -1,0 +1,24 @@
+{
+    "TetrisAgent": {
+        "checkpoints": [
+            {
+                "steps": 79088,
+                "file_path": "results\\TetrisAI-day2-1\\TetrisAgent\\TetrisAgent-79088.onnx",
+                "reward": null,
+                "creation_time": 1606768333.9443645
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 79088,
+            "file_path": "results\\TetrisAI-day2-1\\TetrisAgent.onnx",
+            "reward": null,
+            "creation_time": 1606768333.9443645
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.2.0",
+        "mlagents_version": "0.22.0",
+        "torch_version": "1.7.0+cu110",
+        "tensorflow_version": -1
+    }
+}

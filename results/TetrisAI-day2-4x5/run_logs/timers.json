@@ -1,0 +1,47 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1606772488",
+        "python_version": "3.8.5 (tags/v3.8.5:580fbb0, Jul 20 2020, 15:57:54) [MSC v.1924 64 bit (AMD64)]",
+        "command_line_arguments": "D:\\Python\\Scripts\\mlagents-learn config/tetrisagent_config.yaml --run-id=TetrisAI-day2-4x5 --resume",
+        "mlagents_version": "0.22.0",
+        "mlagents_envs_version": "0.22.0",
+        "communication_protocol_version": "1.2.0",
+        "pytorch_version": "1.7.0+cu110",
+        "numpy_version": "1.19.4",
+        "end_time_seconds": "1606772491"
+    },
+    "total": 2.9725010000000003,
+    "count": 1,
+    "self": 0.1849138000000008,
+    "children": {
+        "run_training.setup": {
+            "total": 0.015372999999999859,
+            "count": 1,
+            "self": 0.015372999999999859
+        },
+        "TrainerController.start_learning": {
+            "total": 2.7722141999999996,
+            "count": 1,
+            "self": 0.0029799999999995386,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 2.768856,
+                    "count": 1,
+                    "self": 2.768856
+                },
+                "trainer_threads": {
+                    "total": 8.999999998593466e-07,
+                    "count": 1,
+                    "self": 8.999999998593466e-07
+                },
+                "TrainerController._save_models": {
+                    "total": 0.0003773000000002469,
+                    "count": 1,
+                    "self": 0.0003773000000002469
+                }
+            }
+        }
+    }
+}

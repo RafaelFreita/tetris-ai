@@ -1,0 +1,48 @@
+{
+    "TetrisAgent": {
+        "checkpoints": [
+            {
+                "steps": 3499703,
+                "file_path": "results\\TetrisAI-night7\\TetrisAgent\\TetrisAgent-3499703.onnx",
+                "reward": -203923.26611328125,
+                "creation_time": 1606728286.3467572
+            },
+            {
+                "steps": 3999537,
+                "file_path": "results\\TetrisAI-night7\\TetrisAgent\\TetrisAgent-3999537.onnx",
+                "reward": -237307.1103515625,
+                "creation_time": 1606730132.7276473
+            },
+            {
+                "steps": 4499671,
+                "file_path": "results\\TetrisAI-night7\\TetrisAgent\\TetrisAgent-4499671.onnx",
+                "reward": -186477.64778645834,
+                "creation_time": 1606731978.8660312
+            },
+            {
+                "steps": 4999874,
+                "file_path": "results\\TetrisAI-night7\\TetrisAgent\\TetrisAgent-4999874.onnx",
+                "reward": null,
+                "creation_time": 1606733832.3224607
+            },
+            {
+                "steps": 5007234,
+                "file_path": "results\\TetrisAI-night7\\TetrisAgent\\TetrisAgent-5007234.onnx",
+                "reward": -151369.78306361608,
+                "creation_time": 1606733832.8474798
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 5007234,
+            "file_path": "results\\TetrisAI-night7\\TetrisAgent.onnx",
+            "reward": -151369.78306361608,
+            "creation_time": 1606733832.8474798
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.2.0",
+        "mlagents_version": "0.22.0",
+        "torch_version": "1.7.0+cu110",
+        "tensorflow_version": -1
+    }
+}
